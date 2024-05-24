@@ -1,0 +1,35 @@
+name: Sync Branches
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 每天运行一次
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Git
+        run: sudo apt-get install git
+
+      - name: Fetch upstream branches and sync
+        id: sync_branches
+        run: |
+          python3 .github/scripts/sync_branches.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if branches were updated
+        if: steps.sync_branches.outputs.updated == 'true'
+        run: echo "Branches were updated."
+      - name: Check if branches were not updated
+        if: steps.sync_branches.outputs.updated == 'false'
+        run: echo "No new branches were updated."

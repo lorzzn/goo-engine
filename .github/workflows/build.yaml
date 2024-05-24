@@ -1,0 +1,32 @@
+name: build
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch name"
+        required: false
+        default: ""
+        type: string
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+        with:
+          ref: "${{ inputs.branch || github.head_ref }}"
+
+      - name: Print branch name
+        run: |
+          echo "Pushed to branch: ${{ inputs.branch || github.head_ref }}"
+
+      # - name: build
+      #   uses: ./.github/actions/build_ci
+      #   with:
+      #     job-name: builder
