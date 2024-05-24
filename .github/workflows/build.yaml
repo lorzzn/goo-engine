@@ -17,23 +17,6 @@ jobs:
         os: [windows-latest, macos-latest, ubuntu-latest]
 
     steps:
-      - name: Setup Environment Variables
-        shell: python
-        run: |
-          import os
-          from os import path
-          main_dir = path.join(os.getcwd(),'..')
-          main_dir = path.abspath(main_dir)
-          print("::set-env name=_MAIN_DIR::{}".format(main_dir))
-
-      - name: Cache build environment
-        uses: actions/cache@v2
-        env:
-          cache-name: ${{ github.ref }}-${{ runner.os }}
-        with:
-          path: ${{ env._MAIN_DIR }}
-          key: build-cache-${{ env.cache-name }}
-
       - uses: actions/checkout@v2
       
       - name: Set up Python
@@ -48,4 +31,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Blender-Release-${{ runner.os }}
-          path: ${{ env._MAIN_DIR }}/build_release/bin/
+          path: release/bin/

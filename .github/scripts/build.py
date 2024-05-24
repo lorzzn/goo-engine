@@ -24,3 +24,4 @@ if sys.platform.startswith('darwin'):
 print("Build Blender project")
 subprocess.check_call(['make','update'])
 subprocess.check_call(['make'])
+subprocess.check_call(['ls'])
