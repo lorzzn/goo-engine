@@ -25,7 +25,7 @@ jobs:
           python-version: '3.x'
 
       - name: Build.py
-        run: python build.py
+        run: python .github/scripts/build.py
 
       - name: Upload Build
         uses: actions/upload-artifact@v2
